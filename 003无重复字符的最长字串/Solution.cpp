@@ -1,4 +1,9 @@
 //Solution 1:
+//
+//这道题也有一点滑动窗口的味道
+//用双指针分别标志当前位置和无重复的起始位置
+//值得深思
+//
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
@@ -21,17 +26,25 @@ public:
 };
 
 //Solution 2:
+//
+//temp里save的是不重复字母的index
+//
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         vector<int> temp(256,-1);
-        int ans = 0;
-        int left = -1;
-        for(int i = 0; i < s.size() ; i++){
-            left = max(left,temp[s[i]]);
-            temp[s[i]] = i;
-            ans = max(ans,i-left);
-        }
-        return ans;
+	int start = -1;
+	int res = 0;
+	for(int i = 0;i<s.size();i++){
+	    if(temp[s[i]]>start){
+	        start = temp[s[i]];
+	    }
+	    temp[s[i]] = i;
+	    res = max(res,i-start);
+	}
+	return res;
     }
 };
+
+//Reference : https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1737/C%2B%2B-code-in-9-lines.
+
