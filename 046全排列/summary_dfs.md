@@ -66,16 +66,24 @@ public:
 class Solution
 {
 public:
-	vector<vector<int>> res;
-	vector<vector<int>> fun(vector<int>& nums){
-		srot(nums.begin(),nums.end());
-		return res;
-	}
-private:
-	void dfs(){
-
-	}
-	
+    vector<vector<int>> res;
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        vector<int> path;
+        dfs(nums,path,0);
+        return res;
+    }
+    
+    void dfs(vector<int>& nums,vector<int>& path,int begin){
+        res.push_back(path);
+        for(int i = begin;i<nums.size();i++){
+            if(i==begin||nums[i] != nums[i-1]){
+                path.push_back(nums[i]);
+                dfs(nums,path,i+1);
+                path.pop_back();
+            }
+        }
+    }
 };
 ```
 
@@ -114,15 +122,31 @@ private:
 ### 2.2全排列(有重复元素)
 
 ```c++
-class Solution
-{
+class Solution {
 public:
-
-private:
-	void dfs(){
-
+    vector<vector<int>> res;
+	vector<vector<int>> permuteUnique(vector<int>& nums) {
+		sort(nums.begin(), nums.end());
+		vector<int> path;
+		dfs(nums, path, 0);
+		return res;
 	}
-	
+	void dfs(vector<int>& nums, vector<int> path,int state)
+	{
+		if (path.size() == nums.size()){
+			res.push_back(path);
+			return;
+		}
+		for (int i = 0; i < nums.size(); i++)
+		{
+			if ((state>>i)&1||i>0&&nums[i] == nums[i-1]&&!(state>>(i-1)&1)){
+                continue; 
+            }
+			path.push_back(nums[i]);
+			dfs(nums, path, state | 1<< i);
+			path.pop_back();
+		}
+	}
 };
 ```
 
@@ -156,20 +180,6 @@ private:
 			dfs(nums,path,i+1);
 			path.pop_back();
 		}
-	}
-	
-};
-```
-### 3.2组合数(含有重复元素)
-
-```c++
-class Solution
-{
-public:
-
-private:
-	void dfs(){
-
 	}
 	
 };
